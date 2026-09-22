@@ -3,7 +3,6 @@
 using namespace std;
 class student{
     public:
-
     int roll ;
     char name[20];
     float marks;
