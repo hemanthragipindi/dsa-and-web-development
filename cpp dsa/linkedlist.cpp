@@ -1,75 +1,165 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
-class node{
-    public: 
+
+class node {
+public:
     int data;
     node* link;
-    node(int val){
-        data=val;
-        link=NULL;
+
+    node(int val) {
+        data = val;
+        link = nullptr;
     }
-
-
 };
-node* insertatBeg(node* root,int value){
-    node* freshnode=new node(value);
-    if(root==NULL){
-        root=freshnode;
+
+node* insertAtBeginning(node* root, int value) {
+    node* freshNode = new node(value);
+    freshNode->link = root;
+    return freshNode;
+}
+
+node* insertAtEnd(node* root, int value) {
+    node* freshNode = new node(value);
+    if (root == nullptr) {
+        return freshNode;
     }
-    else{
-        freshnode->link=root;
-        root=freshnode;
+
+    node* temporary = root;
+    while (temporary->link != nullptr) {
+        temporary = temporary->link;
+    }
+    temporary->link = freshNode;
+    return root;
+}
+
+node* deleteValue(node* root, int value) {
+    if (root == nullptr) {
+        return nullptr;
+    }
+    if (root->data == value) {
+        node* nextNode = root->link;
+        delete root;
+        return nextNode;
+    }
+
+    node* temporary = root;
+    while (temporary->link != nullptr && temporary->link->data != value) {
+        temporary = temporary->link;
+    }
+    if (temporary->link != nullptr) {
+        node* nodeToDelete = temporary->link;
+        temporary->link = nodeToDelete->link;
+        delete nodeToDelete;
     }
     return root;
 }
-node* insertatEnd(node* root,int value){
-    node* freshnode=new node(value);
-    if(root==NULL){
-        root=freshnode;
-    }
-    else{
-        node* temp=root;
-        while(temp->link!=NULL){
-            temp=temp->link;
+
+bool search(node* root, int value) {
+    while (root != nullptr) {
+        if (root->data == value) {
+            return true;
         }
-        temp->link=freshnode;
+        root = root->link;
     }
-    return root;
+    return false;
 }
-void display(node* root){
-    node* temp=root;
-    while(temp!=NULL){
-        cout<<temp->data<<" ";
-        temp=temp->link;
+
+int countNodes(node* root) {
+    int count = 0;
+    while (root != nullptr) {
+        count++;
+        root = root->link;
     }
-    cout<<endl;
-};
-while(true){
-    cout<<"1. Insert at beginning"<<endl;
-    cout<<"2. Insert at end"<<endl;
-    cout<<"3. Display"<<endl;
-    cout<<"4. Exit"<<endl;
+    return count;
+}
+
+node* reverseList(node* root) {
+    node* previous = nullptr;
+    node* current = root;
+    while (current != nullptr) {
+        node* nextNode = current->link;
+        current->link = previous;
+        previous = current;
+        current = nextNode;
+    }
+    return previous;
+}
+
+void display(node* root) {
+    if (root == nullptr) {
+        cout << "List is empty" << endl;
+        return;
+    }
+    while (root != nullptr) {
+        cout << root->data << " ";
+        root = root->link;
+    }
+    cout << endl;
+}
+
+void deleteList(node* root) {
+    while (root != nullptr) {
+        node* nextNode = root->link;
+        delete root;
+        root = nextNode;
+    }
+}
+
+int main() {
+    node* root = nullptr;
     int choice;
-    cin>>choice;
-    switch(choice){
+
+    do {
+        cout << "\n1. Insert at beginning\n"
+             << "2. Insert at end\n"
+             << "3. Delete a value\n"
+             << "4. Search a value\n"
+             << "5. Reverse list\n"
+             << "6. Count nodes\n"
+             << "7. Display\n"
+             << "8. Exit\n"
+             << "Enter your choice: ";
+        cin >> choice;
+
+        int value;
+        switch (choice) {
         case 1:
-            int val1;
-            cout<<"Enter value to insert at beginning: ";
-            cin>>val1;
-            root=insertatBeg(root,val1);
+            cout << "Enter value: ";
+            cin >> value;
+            root = insertAtBeginning(root, value);
             break;
         case 2:
-            int val2;
-            cout<<"Enter value to insert at end: ";
-            cin>>val2;
-            root=insertatEnd(root,val2);
+            cout << "Enter value: ";
+            cin >> value;
+            root = insertAtEnd(root, value);
             break;
         case 3:
-            display(root);
+            cout << "Enter value to delete: ";
+            cin >> value;
+            root = deleteValue(root, value);
             break;
         case 4:
-            exit(0);
+            cout << "Enter value to search: ";
+            cin >> value;
+            cout << (search(root, value) ? "Value found" : "Value not found") << endl;
+            break;
+        case 5:
+            root = reverseList(root);
+            cout << "List reversed" << endl;
+            break;
+        case 6:
+            cout << "Number of nodes: " << countNodes(root) << endl;
+            break;
+        case 7:
+            display(root);
+            break;
+        case 8:
+            break;
         default:
-            cout<<"Invalid choice"<<endl;
-    }
+            cout << "Invalid choice" << endl;
+        }
+    } while (choice != 8);
+
+    deleteList(root);
+    return 0;
 }
