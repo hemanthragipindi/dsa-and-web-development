@@ -53,8 +53,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "a:/dsa-and-web-development/cpp",
-      "program": "a:/dsa-and-web-development/cpp/build/Debug/outDebug",
+      "cwd": "a:/dsa-and-web-development/dsa-course/unit-3-stacks-queues/cpp",
+      "program": "a:/dsa-and-web-development/dsa-course/unit-3-stacks-queues/cpp/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
